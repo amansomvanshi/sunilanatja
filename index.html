@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anantaja – Farmer Registration</title>
+<meta name="description" content="Join Anantaja – free horticulture guidance, quality seeds and a fair price for your produce. Register now.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+  :root{
+    --green:#1f7a3a; --green-d:#145a29; --green-l:#e8f5ec;
+    --yellow:#f4b400; --ink:#1d2a22; --muted:#5d6b62; --line:#d9e3dc;
+    --bg:#f7faf6; --card:#ffffff; --err:#c62828; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Mukta',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  a{color:var(--green)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+  /* header */
+  header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-family:'Playfair Display',serif;font-weight:500;font-size:1.6rem;color:#14472b;text-decoration:none;display:flex;gap:6px;align-items:center}
+  .logo img{height:44px;width:44px}
+  .btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;transition:background .15s}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green);border:2px solid var(--green)}
+  .btn.sm{padding:8px 16px;font-size:.95rem}
+
+  /* hero */
+  .hero{background:linear-gradient(135deg,#145a29 0%,#1f7a3a 55%,#4c9a2a 100%);color:#fff;padding:56px 0 64px;position:relative;overflow:hidden}
+  .hero::after{content:"🌾";position:absolute;right:-20px;bottom:-40px;font-size:220px;opacity:.12}
+  .hero h1{font-size:clamp(1.9rem,5vw,3rem);line-height:1.15;margin:0 0 12px}
+  .hero p{font-size:1.15rem;max-width:620px;opacity:.95;margin:0 0 24px}
+  .hero .btn{background:var(--yellow);color:#1d2a22;font-size:1.1rem}
+  .hero .btn:hover{background:#ffc928}
+  .stats{display:flex;flex-wrap:wrap;gap:28px;margin-top:32px}
+  .stats div{font-size:.95rem;opacity:.9}
+  .stats b{display:block;font-size:1.6rem}
+
+  section{padding:48px 0}
+  h2{font-size:clamp(1.5rem,3.5vw,2rem);margin:0 0 6px;color:var(--green-d)}
+  .sub{color:var(--muted);margin:0 0 28px}
+
+  /* benefits */
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .card .ic{font-size:2rem}
+  .card h3{margin:8px 0 4px;font-size:1.15rem}
+  .card p{margin:0;color:var(--muted);font-size:.97rem}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .steps .card{position:relative;padding-top:44px}
+  .steps .card::before{counter-increment:s;content:counter(s);position:absolute;top:14px;left:20px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700}
+
+  /* gallery */
+  .gallery{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  .ph{aspect-ratio:4/3;border-radius:var(--radius);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;color:#fff;font-weight:700;background-size:cover;background-position:center;position:relative;overflow:hidden}
+  .ph::before{content:attr(data-emoji);position:absolute;top:10px;right:12px;font-size:2.4rem}
+  .ph small{font-weight:400;opacity:.9}
+
+  /* form */
+  .form-wrap{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 8px 30px rgba(20,90,41,.06)}
+  fieldset{border:0;margin:0 0 28px;padding:0}
+  legend{font-size:1.2rem;font-weight:800;color:var(--green-d);padding:0;margin-bottom:14px;display:flex;align-items:center;gap:8px;width:100%;border-bottom:2px solid var(--green-l);padding-bottom:8px}
+  .row{display:grid;gap:14px 18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .f{display:flex;flex-direction:column;gap:4px}
+  .f.full{grid-column:1/-1}
+  label.l{font-weight:600;font-size:.97rem}
+  label.l .hi{color:var(--muted);font-weight:400}
+  .req::after{content:" *";color:var(--err)}
+  input[type=text],input[type=tel],input[type=number],input[type=date],select,textarea{
+    font:inherit;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-l)}
+  textarea{min-height:84px;resize:vertical}
+  .hint{font-size:.85rem;color:var(--muted)}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opts label{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;user-select:none;font-size:.97rem;background:#fff}
+  .opts input{accent-color:var(--green);margin:0}
+  .opts label:has(input:checked){border-color:var(--green);background:var(--green-l);font-weight:600}
+  .inline-check{display:flex;gap:8px;align-items:center;font-size:.92rem;color:var(--muted);margin-top:4px}
+  .loc{display:flex;gap:8px}
+  .loc input{flex:1}
+  .err-msg{color:var(--err);font-size:.85rem;display:none}
+  .f.invalid input,.f.invalid select,.f.invalid textarea{border-color:var(--err)}
+  .f.invalid .err-msg{display:block}
+  .f.invalid .opts label{border-color:#f0b4b4}
+  .hidden{display:none!important}
+
+  .drop{border:2px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;cursor:pointer;background:var(--bg)}
+  .drop:hover{border-color:var(--green)}
+  .previews{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));margin-top:12px}
+  .previews div{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eee}
+  .previews img{width:100%;height:100%;object-fit:cover}
+  .previews button{position:absolute;top:4px;right:4px;border:0;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;line-height:1}
+
+  .submit-bar{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .submit-bar .btn{font-size:1.1rem;padding:14px 34px}
+
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;place-items:center;z-index:50;padding:16px}
+  .modal.show{display:grid}
+  .modal .box{background:#fff;border-radius:20px;padding:28px;max-width:440px;width:100%;text-align:center}
+  .modal .big{font-size:3.2rem}
+  .regid{font-size:1.5rem;font-weight:800;color:var(--green-d);background:var(--green-l);border-radius:10px;padding:10px;margin:12px 0;letter-spacing:.5px}
+
+  footer{background:#10331c;color:#cfe3d4;padding:28px 0;font-size:.95rem}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+  @media (max-width:600px){
+    .form-wrap{padding:16px;border-radius:16px}
+    section{padding:36px 0}
+    .hero{padding:40px 0 48px}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="assets/anantaja-icon.png" alt="">Anantaja</a>
+    <a class="btn sm" href="#register">Register</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <h1>Grow with Anantaja.<br>Get the right price for your harvest.</h1>
+    <p>Free horticulturist guidance, quality seeds, irrigation &amp; fertilizer advice, pest and disease support — and Anantaja buys your produce directly. Register in just 5 minutes.</p>
+    <a class="btn" href="#register">Register Now →</a>
+    <div class="stats">
+      <div><b>✓ Free</b>Registration</div>
+      <div><b>👨‍🌾 Expert</b>Farming Advice</div>
+      <div><b>₹ Fair Price</b>Direct Buying</div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section>
+  <div class="wrap">
+    <h2>What We Do for Farmers</h2>
+    <p class="sub">Support at every step — from sowing to selling</p>
+    <div class="grid">
+      <div class="card"><div class="ic">👨‍🔬</div><h3>Horticulturist Guidance</h3><p>Our experts recommend the right practices for your farm or greenhouse.</p></div>
+      <div class="card"><div class="ic">🌱</div><h3>Seeds &amp; Planting Material</h3><p>Access to high-quality seeds and planting material.</p></div>
+      <div class="card"><div class="ic">💧</div><h3>Irrigation &amp; Fertilizer</h3><p>When to water, how much, and which fertilizer to use — complete guidance.</p></div>
+      <div class="card"><div class="ic">🐛</div><h3>Pest &amp; Disease Control</h3><p>Quick help when pests or diseases affect your crop.</p></div>
+      <div class="card"><div class="ic">🚚</div><h3>Direct Purchase</h3><p>Anantaja buys your vegetables directly — no more mandi hassles.</p></div>
+      <div class="card"><div class="ic">📈</div><h3>Higher Income</h3><p>No middlemen — better and assured prices for you.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:#fff;border-block:1px solid var(--line)">
+  <div class="wrap">
+    <h2>How It Works</h2>
+    <p class="sub">Four simple steps to join</p>
+    <div class="steps">
+      <div class="card"><h3>Fill the Form</h3><p>Share your name, number, farm and crop details.</p></div>
+      <div class="card"><h3>We Call You</h3><p>Our team contacts you within 48 hours for verification.</p></div>
+      <div class="card"><h3>Farm Visit</h3><p>A horticulturist visits your farm and advises you.</p></div>
+      <div class="card"><h3>Start Supplying</h3><p>Sell your produce to Anantaja at an agreed price.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE PHOTOS -->
+<section>
+  <div class="wrap">
+    <h2>Our Farmers&rsquo; Fields</h2>
+    <p class="sub">Sample farm photos — add photos of your own farm in the form below</p>
+    <!-- TODO: replace with real photos using background-image: url('photos/xyz.jpg') -->
+    <div class="gallery">
+      <div class="ph" data-emoji="🍅" style="background:linear-gradient(160deg,#e53935,#8e1b1b)">Tomato – Greenhouse<small>2 acres · 800 kg/week</small></div>
+      <div class="ph" data-emoji="🫑" style="background:linear-gradient(160deg,#43a047,#1b5e20)">Capsicum<small>Polyhouse · 1.5 acres</small></div>
+      <div class="ph" data-emoji="🥒" style="background:linear-gradient(160deg,#7cb342,#33691e)">Cucumber<small>Open farming · 3 acres</small></div>
+      <div class="ph" data-emoji="🥬" style="background:linear-gradient(160deg,#26a69a,#00574b)">Leafy Greens<small>Spinach, coriander, fenugreek</small></div>
+      <div class="ph" data-emoji="🌶️" style="background:linear-gradient(160deg,#fb8c00,#a33f00)">Green Chilli<small>Open farming · 4 acres</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION FORM -->
+<section id="register" style="background:var(--green-l)">
+  <div class="wrap">
+    <h2>Farmer Registration Form</h2>
+    <p class="sub">Fields marked <span style="color:var(--err)">*</span> are required</p>
+
+    <form id="farmerForm" class="form-wrap" novalidate>
+
+      <!-- 1. Basic -->
+      <fieldset>
+        <legend>👤 1. Basic Details</legend>
+        <div class="row">
+          <div class="f"><label class="l req" for="name">Farmer Name</label>
+            <input type="text" id="name" name="farmerName" required autocomplete="name"><span class="err-msg">Please enter your name</span></div>
+          <div class="f"><label class="l req" for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" name="mobile" required inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit number"><span class="err-msg">Enter a valid 10-digit mobile number</span></div>
+          <div class="f"><label class="l" for="whatsapp">WhatsApp Number</label>
+            <input type="tel" id="whatsapp" name="whatsapp" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}">
+            <label class="inline-check"><input type="checkbox" id="sameWa" checked> Same as mobile number</label>
+            <span class="err-msg">Enter a valid 10-digit number</span></div>
+          <div class="f"><label class="l req" for="village">Village</label>
+            <input type="text" id="village" name="village" required><span class="err-msg">Please enter your village</span></div>
+          <div class="f"><label class="l req" for="district">District</label>
+            <input type="text" id="district" name="district" required><span class="err-msg">Please enter your district</span></div>
+          <div class="f"><label class="l" for="address">Full Address</label>
+            <input type="text" id="address" name="address" placeholder="Tehsil, PIN code, etc."></div>
+          <div class="f full"><label class="l req" for="farmLocation">Farm Location</label>
+            <div class="loc">
+              <input type="text" id="farmLocation" name="farmLocation" required placeholder="Farm address or Google Maps link">
+              <button type="button" class="btn ghost sm" id="gpsBtn">📍 Use My Location</button>
+            </div>
+            <span class="hint">Tip: stand at your farm and tap "Use My Location"</span>
+            <span class="err-msg">Please enter your farm location</span></div>
+        </div>
+      </fieldset>
+
+      <!-- 2. Farm -->
+      <fieldset>
+        <legend>🚜 2. Farm Details</legend>
+        <div class="row">
+          <div class="f"><label class="l req" for="land">Total Land Area (Acres)</label>
+            <input type="number" id="land" name="totalLandAcre" min="0" step="0.1" required><span class="err-msg">Enter land area in acres</span></div>
+          <div class="f"><label class="l req" for="exp">Farming Experience (Years)</label>
+            <input type="number" id="exp" name="experienceYears" min="0" max="80" required><span class="err-msg">Enter experience in years</span></div>
+          <div class="f full"><label class="l req">Farming Type</label>
+            <div class="opts">
+              <label><input type="radio" name="farmingType" value="Open Farming" required> Open Farming</label>
+              <label><input type="radio" name="farmingType" value="Greenhouse"> Greenhouse / Polyhouse</label>
+              <label><input type="radio" name="farmingType" value="Both"> Both</label>
+            </div><span class="err-msg">Please select an option</span></div>
+          <div class="f gh hidden"><label class="l req" for="ghArea">Greenhouse Area (Acres)</label>
+            <input type="number" id="ghArea" name="greenhouseArea" min="0" step="0.1"><span class="err-msg">Enter greenhouse area</span></div>
+          <div class="f gh hidden"><label class="l req">Greenhouse Ownership</label>
+            <div class="opts">
+              <label><input type="radio" name="greenhouseOwnership" value="Own"> Own</label>
+              <label><input type="radio" name="greenhouseOwnership" value="Rented"> Rented</label>
+            </div><span class="err-msg">Please select an option</span></div>
+        </div>
+      </fieldset>
+
+      <!-- 3. Crops -->
+      <fieldset>
+        <legend>🌾 3. Crop Details</legend>
+        <div class="row">
+          <div class="f full"><label class="l req">Crops Currently Growing</label>
+            <div class="opts" id="cropOpts">
+              <label><input type="checkbox" name="currentCrops" value="Tomato"> 🍅 Tomato</label>
+              <label><input type="checkbox" name="currentCrops" value="Capsicum"> 🫑 Capsicum</label>
+              <label><input type="checkbox" name="currentCrops" value="Cucumber"> 🥒 Cucumber</label>
+              <label><input type="checkbox" name="currentCrops" value="Green Chilli"> 🌶️ Green Chilli</label>
+              <label><input type="checkbox" name="currentCrops" value="Brinjal"> 🍆 Brinjal</label>
+              <label><input type="checkbox" name="currentCrops" value="Leafy Vegetables"> 🥬 Leafy Vegetables</label>
+              <label><input type="checkbox" name="currentCrops" value="Onion"> 🧅 Onion</label>
+              <label><input type="checkbox" name="currentCrops" value="Potato"> 🥔 Potato</label>
+              <label><input type="checkbox" name="currentCrops" value="Bottle Gourd"> Bottle Gourd</label>
+              <label><input type="checkbox" name="currentCrops" value="Okra"> Okra</label>
+            </div><span class="err-msg">Select at least one crop</span></div>
+          <div class="f"><label class="l" for="otherCrops">Other Crops</label>
+            <input type="text" id="otherCrops" name="otherCrops" placeholder="e.g. wheat, mustard"></div>
+          <div class="f"><label class="l req" for="duration">Crop Duration (Days)</label>
+            <input type="number" id="duration" name="cropDurationDays" min="1" max="730" required placeholder="Days from sowing to harvest"><span class="err-msg">Enter crop duration in days</span></div>
+          <div class="f"><label class="l" for="cycles">Farming Cycles per Year</label>
+            <select id="cycles" name="cyclesPerYear"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
+          <div class="f"><label class="l req" for="production">Average Production (kg / week)</label>
+            <input type="number" id="production" name="avgProductionKgWeek" min="0" required><span class="err-msg">Enter production in kg</span></div>
+          <div class="f"><label class="l" for="harvest">Expected Harvest Date</label>
+            <input type="date" id="harvest" name="expectedHarvestDate"></div>
+        </div>
+      </fieldset>
+
+      <!-- 4. Support -->
+      <fieldset>
+        <legend>🤝 4. Support Needed</legend>
+        <div class="row">
+          <div class="f full"><label class="l" for="problems">Problems Faced During Farming</label>
+            <textarea id="problems" name="problemsFaced" placeholder="e.g. water shortage, pests, not getting a fair price..."></textarea></div>
+          <div class="f"><label class="l">Horticulturist Guidance Required?</label>
+            <div class="opts"><label><input type="radio" name="horticulturistGuidance" value="Yes"> Yes</label><label><input type="radio" name="horticulturistGuidance" value="No"> No</label></div></div>
+          <div class="f"><label class="l">Irrigation / Fertilizer Guidance Required?</label>
+            <div class="opts"><label><input type="radio" name="irrigationFertilizerGuidance" value="Yes"> Yes</label><label><input type="radio" name="irrigationFertilizerGuidance" value="No"> No</label></div></div>
+          <div class="f"><label class="l">Pest &amp; Disease Support Required?</label>
+            <div class="opts"><label><input type="radio" name="pestDiseaseSupport" value="Yes"> Yes</label><label><input type="radio" name="pestDiseaseSupport" value="No"> No</label></div></div>
+          <div class="f"><label class="l" for="seeds">Seeds &amp; Planting Material Requirement</label>
+            <input type="text" id="seeds" name="seedsRequirement" placeholder="Which seeds, how much"></div>
+        </div>
+      </fieldset>
+
+      <!-- 5. Selling -->
+      <fieldset>
+        <legend>💰 5. Selling Produce</legend>
+        <div class="row">
+          <div class="f full"><label class="l req">Interested in Selling Produce to Anantaja?</label>
+            <div class="opts"><label><input type="radio" name="interestedInSelling" value="Yes" required> Yes</label><label><input type="radio" name="interestedInSelling" value="No"> No</label></div>
+            <span class="err-msg">Please select an option</span></div>
+          <div class="f sell"><label class="l" for="qty">Available Produce Quantity (kg)</label>
+            <input type="number" id="qty" name="availableQtyKg" min="0"></div>
+          <div class="f sell"><label class="l" for="price">Expected Selling Price (₹/kg)</label>
+            <input type="number" id="price" name="expectedPricePerKg" min="0" step="0.5"></div>
+          <div class="f sell"><label class="l" for="channel">Current Selling Channel</label>
+            <select id="channel" name="currentSellingChannel"><option value="">Select</option><option value="Mandi">Mandi</option><option value="Trader">Trader</option><option value="Direct">Direct to Customer</option><option value="Other">Other</option></select></div>
+          <div class="f sell"><label class="l" for="freq">Preferred Supply Frequency</label>
+            <select id="freq" name="supplyFrequency"><option value="">Select</option><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Seasonal">Seasonal</option></select></div>
+          <div class="f sell"><label class="l">Transportation Available?</label>
+            <div class="opts"><label><input type="radio" name="transportAvailable" value="Yes"> Yes</label><label><input type="radio" name="transportAvailable" value="No"> No</label></div></div>
+        </div>
+      </fieldset>
+
+      <!-- 6. Photos -->
+      <fieldset>
+        <legend>📷 6. Farm Photos</legend>
+        <div class="row">
+          <div class="f full">
+            <label class="drop" for="photos">
+              <div style="font-size:2rem">📸</div>
+              <b>Upload farm / crop photos</b><br>
+              <span class="hint">Take a photo or choose from gallery · up to 6 photos</span>
+            </label>
+            <input type="file" id="photos" accept="image/*" multiple hidden>
+            <div class="previews" id="previews"></div>
+          </div>
+          <div class="f full"><label class="l" for="comments">Additional Comments</label>
+            <textarea id="comments" name="additionalComments"></textarea></div>
+          <div class="f full"><label class="inline-check" style="color:var(--ink)"><input type="checkbox" id="consent" required> I agree that the Anantaja team may contact me by phone / WhatsApp.</label>
+            <span class="err-msg">Please give consent to continue</span></div>
+        </div>
+      </fieldset>
+
+      <div class="submit-bar">
+        <button type="submit" class="btn" id="submitBtn">✅ Submit Registration</button>
+        <span class="hint">You will receive a Registration ID after submitting.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>Anantaja</b> · V2V2G Project</div>
+    <div>With farmers, for farmers</div>
+  </div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal" id="successModal" role="dialog" aria-modal="true">
+  <div class="box">
+    <div class="big">🎉</div>
+    <h2 style="margin:4px 0">Thank you, <span id="mName"></span>!</h2>
+    <p>Your registration is complete. Your Registration ID is:</p>
+    <div class="regid" id="mId"></div>
+    <p class="hint">Please keep this ID safe. Our team will contact you within 48 hours.</p>
+    <button class="btn" onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIG ============
+   Put your backend API URL here (e.g. "https://anantaja.com/api/farmers").
+   If left empty, data is saved only in this browser (localStorage) — for testing. */
+const API_ENDPOINT = "";
+const MAX_PHOTOS = 6;
+
+const form = document.getElementById('farmerForm');
+const $ = id => document.getElementById(id);
+
+/* WhatsApp same as mobile */
+const syncWa = () => { if ($('sameWa').checked) $('whatsapp').value = $('mobile').value; $('whatsapp').readOnly = $('sameWa').checked; };
+$('sameWa').addEventListener('change', syncWa);
+$('mobile').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,''); syncWa(); });
+$('whatsapp').addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,''));
+syncWa();
+
+/* Greenhouse fields show/hide */
+form.querySelectorAll('[name=farmingType]').forEach(r => r.addEventListener('change', () => {
+  const show = form.farmingType.value !== 'Open Farming';
+  document.querySelectorAll('.gh').forEach(el => el.classList.toggle('hidden', !show));
+}));
+
+/* Selling fields show/hide */
+form.querySelectorAll('[name=interestedInSelling]').forEach(r => r.addEventListener('change', () => {
+  const show = form.interestedInSelling.value === 'Yes';
+  document.querySelectorAll('.sell').forEach(el => el.classList.toggle('hidden', !show));
+}));
+
+/* GPS location */
+$('gpsBtn').addEventListener('click', () => {
+  if (!navigator.geolocation) return alert('Location is not supported on this device');
+  $('gpsBtn').textContent = '⏳ Locating...';
+  navigator.geolocation.getCurrentPosition(p => {
+    const {latitude:a, longitude:b} = p.coords;
+    $('farmLocation').value = `https://maps.google.com/?q=${a.toFixed(6)},${b.toFixed(6)}`;
+    $('gpsBtn').textContent = '✅ Location found';
+    clearErr($('farmLocation'));
+  }, () => { alert('Could not get location — please turn on GPS or type the address manually'); $('gpsBtn').textContent = '📍 Use My Location'; },
+  {enableHighAccuracy:true, timeout:15000});
+});
+
+/* Photos: compress + preview */
+let photos = []; // {name, dataUrl, blob}
+$('photos').addEventListener('change', async e => {
+  for (const file of [...e.target.files]) {
+    if (photos.length >= MAX_PHOTOS) { alert(`Maximum ${MAX_PHOTOS} photos allowed`); break; }
+    photos.push(await compress(file));
+  }
+  e.target.value = '';
+  renderPreviews();
+});
+function compress(file, max = 1280, q = 0.75) {
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = img.width * s; c.height = img.height * s;
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(blob => res({ name: file.name, blob, dataUrl: c.toDataURL('image/jpeg', q) }), 'image/jpeg', q);
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+function renderPreviews() {
+  $('previews').innerHTML = '';
+  photos.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.innerHTML = `<img src="${p.dataUrl}" alt=""><button type="button" aria-label="Remove">×</button>`;
+    d.querySelector('button').onclick = () => { photos.splice(i, 1); renderPreviews(); };
+    $('previews').appendChild(d);
+  });
+}
+
+/* Validation */
+const fieldOf = el => el.closest('.f');
+function clearErr(el) { fieldOf(el)?.classList.remove('invalid'); }
+form.addEventListener('input', e => clearErr(e.target));
+form.addEventListener('change', e => clearErr(e.target));
+
+function validate() {
+  let firstBad = null;
+  const mark = el => { const f = fieldOf(el); f.classList.add('invalid'); firstBad ??= f; };
+  form.querySelectorAll('.f').forEach(f => f.classList.remove('invalid'));
+
+  form.querySelectorAll('input[required]:not([type=radio]):not([type=checkbox])').forEach(el => {
+    if (!el.checkValidity() || !el.value.trim()) mark(el);
+  });
+  if ($('whatsapp').value && !$('whatsapp').checkValidity()) mark($('whatsapp'));
+  ['farmingType','interestedInSelling'].forEach(n => { if (!form[n].value) mark(form[n][0]); });
+  if (!form.querySelector('[name=currentCrops]:checked')) mark(form.querySelector('[name=currentCrops]'));
+  if (form.farmingType.value && form.farmingType.value !== 'Open Farming') {
+    if (!$('ghArea').value) mark($('ghArea'));
+    if (!form.greenhouseOwnership.value) mark(form.greenhouseOwnership[0]);
+  }
+  if (!$('consent').checked) mark($('consent'));
+
+  if (firstBad) firstBad.scrollIntoView({behavior:'smooth', block:'center'});
+  return !firstBad;
+}
+
+/* Collect data */
+function collect() {
+  const fd = new FormData(form);
+  const data = {};
+  for (const [k, v] of fd.entries()) {
+    if (k === 'currentCrops') (data[k] ??= []).push(v);
+    else data[k] = typeof v === 'string' ? v.trim() : v;
+  }
+  if (data.farmingType === 'Open Farming') { delete data.greenhouseArea; delete data.greenhouseOwnership; }
+  // Admin dashboard fields (29–33)
+  const now = new Date();
+  const ymd = now.toISOString().slice(0,10).replace(/-/g,'');
+  data.farmerRegistrationId = `ANJ-${ymd}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+  data.registrationDate = now.toISOString();
+  data.verificationStatus = 'Pending';
+  data.onboardingStatus = 'New';
+  data.adminRemarks = '';
+  return data;
+}
+
+/* Submit */
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validate()) return;
+  const btn = $('submitBtn');
+  btn.disabled = true; btn.textContent = '⏳ Submitting...';
+  const data = collect();
+
+  try {
+    if (API_ENDPOINT) {
+      const fd = new FormData();
+      fd.append('data', JSON.stringify(data));
+      photos.forEach((p, i) => fd.append('farmPhotos', p.blob, `farm_${i + 1}.jpg`));
+      const r = await fetch(API_ENDPOINT, { method: 'POST', body: fd });
+      if (!r.ok) throw new Error('Server error ' + r.status);
+    } else {
+      saveLocal({ ...data, farmPhotos: photos.map(p => p.dataUrl) });
+    }
+    $('mName').textContent = data.farmerName;
+    $('mId').textContent = data.farmerRegistrationId;
+    $('successModal').classList.add('show');
+    form.reset(); photos = []; renderPreviews(); syncWa();
+    document.querySelectorAll('.gh').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.sell').forEach(el => el.classList.remove('hidden'));
+  } catch (err) {
+    console.error(err);
+    alert('Sorry, submission failed. Please check your internet connection and try again.');
+  } finally {
+    btn.disabled = false; btn.textContent = '✅ Submit Registration';
+  }
+});
+
+function saveLocal(entry) {
+  try {
+    const list = JSON.parse(localStorage.getItem('anantaja_farmers') || '[]');
+    list.push(entry);
+    localStorage.setItem('anantaja_farmers', JSON.stringify(list));
+  } catch (e) {
+    // storage full (photos) → save without photos
+    try {
+      const list = JSON.parse(localStorage.getItem('anantaja_farmers') || '[]');
+      list.push({ ...entry, farmPhotos: [] });
+      localStorage.setItem('anantaja_farmers', JSON.stringify(list));
+    } catch (_) {}
+  }
+}
+function closeModal() { $('successModal').classList.remove('show'); window.scrollTo({top:0, behavior:'smooth'}); }
+</script>
+</body>
+</html>
